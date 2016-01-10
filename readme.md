@@ -6,10 +6,10 @@ a 2D graphics command queue library. Maybe you want to [learn more](https://gith
 ## Example
 
 ```html
-<canvas id="c" width="200", height="100"></canvas>
-<span id="svg" data-width="200" data-height="100"></span>
+<canvas id="c" width="200", height="100"></canvas>         <!-- draw canvas graphics here -->
+<span id="svg" data-width="200" data-height="100"></span>  <!-- embed svg markup here -->
 <script src='g2.js'></script>
-<script src='g2.svg.js'></script>
+<script src='g2.svg.js'></script>                          <!-- SVG addon for g2 -->
 <script>
     g2().style({ls:"green",fs:"orange",lw:3})                // create g2 object and add style.
         .rec(40,30,120,40)                                   // add rectangle.
@@ -20,12 +20,12 @@ a 2D graphics command queue library. Maybe you want to [learn more](https://gith
 ![canvas %amp; svg](img/rects.png)
 
 In order to create SVG output _g2_'s `exe` command can be used. `exe`'s first argument always must be a
-suitable rendering context. Providing such a renderer we have two possibilities:
+suitable rendering context. For providing such a renderer we have two possibilities:
 
 SVG Container | Example | Comment
 -------- |------- | ---
 Any HTML container element | `<div data-width="200" data-height="100"></div>` | `data-width` and `data-height` attributes have to be provided in order to specify the viewport size. The SVG markup will be inserted into that element then via `innerHTML`. So previous content gets overwritten. 
-Any Javascript object | `{ width:200, height:100 }` |  An arbitrary javascript object providing at least both a `width` and a `height` property. The SVG markup will be written as a string to a new or existing `svg` property.
+Any Javascript object | `{ width:200, height:100 }` |  An arbitrary javascript object providing at least both a `width` and a `height` property. The SVG markup will be written as a string to a new or existing `svg` property of that object.
 
 Since _g2_ has no idea of the viewport size while building the command queue, the rendering context has to provide that information.
 
