@@ -1,0 +1,24 @@
+{
+  "name": "g2-svg",
+  "version": "0.2.0",
+  "description": "g2-svg - SVG addon for g2",
+  "main": "g2.svg.js",
+  "scripts": {
+    "build": "npm run concat && npm run cpy",
+    "concat": "concat ../g2/src/g2.cor.js ./src/g2.svg.js -o ./dist/g2svg.js",
+    "minify": "uglifyjs ./src/g2.svg.js -o ./dist/g2.svg.min.js --comments -m",
+    "cpy": "copyfiles -f ./src/g2.svg.js ./dist"
+  },
+  "author": "Stefan Goessner <fang03@web.de>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goessner/g2-svg.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "concat": "^1.0.0",
+    "jsdoc-to-markdown": "^1.3.2",
+    "jslint": "^0.9.5",
+    "uglifyjs": "^2.4.10"
+  }
+}

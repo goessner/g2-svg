@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>svg use - test</title>
+    <style> canvas { border: 1px solid #000; } </style>
+</head>
+
+<body>
+    <h1>svg use - test</h1>
+    <div id="svg" data-width="301", data-height="201"></div>
+    <canvas id="c" width="301", height="201"></canvas>
+    <script src='../../g2/dist/g2.js'></script>
+    <script src='../src/g2.svg.js'></script>
+    <script>
+      var g = g2(), symbol = g2().style({ls:"gray",fs:"orange"}).rec(10,10,50,50).style({fs:"@ls",ls:"blue"}).cir(35,35,20);
+      g.use(symbol,{x:100,y:50,fs:"red",fs2:"green"})
+       .use(symbol,{x:200,y:50,fs:"blue",fs2:"green"})
+       .exe(document.getElementById("svg"))
+       .exe(document.getElementById("c").getContext("2d"));
+   </script>
+</body>
+</html>

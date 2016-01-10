@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>g2-svg - rectangle</title>
+</head>
+
+<body>
+    <h1>g2-svg - rectangle</h1>
+    <canvas id="c" width="200" height="100"></canvas>
+    <span id="svg" data-width="200" data-height="100"></span>
+    <script src='../../g2/dist/g2.js'></script>
+    <script src='../dist/g2.svg.js'></script>
+    <script>
+    g2().style({ls:"green",fs:"orange",lw:3})  // create g2 object and add style.
+        .rec(40,30,120,40).txt("canvas",100,90,0,{thal:"center",foz:14})  // add rectangle.
+        .exe(document.getElementById("c").getContext("2d"))  // render to canvas.
+        .clr().style({ls:"green",fs:"orange",lw:3})  // create g2 object and add style.
+        .rec(40,30,120,40).txt("svg",100,90,0,{thal:"center",foz:14})  // add rectangle.
+        .exe(document.getElementById("svg"));  // render as svg.
+   </script>
+</body>
+</html>

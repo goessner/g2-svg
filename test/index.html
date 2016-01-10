@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>g2 tests</title>
+    <style>
+      td, th { border: 1px solid black; white-space:pre; font:11px monospace; overflow:hidden; text-overflow: ellipsis; }
+    </style>
+    <script src='../../g2/dist/g2.js'></script>
+    <script src='../src/g2.svg.js'></script>
+    <script src="tests.js"></script>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <h1>g2 tests</h1>
+    <table id="test-table" style="table-layout:fixed; border:solid black 1px; border-collapse: collapse; max-width:100%;">
+      <thead>
+        <tr>
+          <th style="width:20px">test</th>
+          <th style="width:250px;max-width:250px">src</th>
+          <th style="width:201px">canvas</th>
+          <th style="width:201px">svg</th>
+          <!-- <th style="width:250px;max-width:250px;display:block">svg</th> -->
+        </tr>
+      </thead>
+      <tbody id="rows">
+      </tbody>
+    </table>
+
+  </body>
+  <template id="row-tmpl">
+    <tr id="row">
+      <td></td>
+      <td></td>
+      <td><canvas width="201" height="101"></canvas></td>
+      <td data-width="201" data-height="101"></td>
+      <!--<td></td>-->
+    </tr>
+  </template>
+</html>

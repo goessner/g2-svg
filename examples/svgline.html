@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>svg line</title>
+</head>
+
+<body>
+    <h1>svg line</h1>
+    <div id="svg" data-width="100", data-height="100"></div>
+    <canvas id="c" width="100", height="100"></canvas>
+    <script src='../../g2/dist/g2.js'></script>
+    <script src='../src/g2.svg.js'></script>
+    <script>
+      var g = g2(), svg = {width:100,height:100};
+      g.lin(10,20,90,80)
+       .exe(document.getElementById("svg"))
+       .exe(svg)
+       .exe(document.getElementById("c").getContext("2d"));
+   </script>
+</body>
+</html>

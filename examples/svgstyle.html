@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>g2 - svg - style</title>
+    <style> canvas { border: 1px solid #000; } </style>
+</head>
+
+<body>
+    <h1>g2 - svg - style</h1>
+    <div id="svg" data-width="300", data-height="200"></div>
+    <canvas id="c" width="300" height="200"></canvas>
+    <script src='../../g2/dist/g2.js'></script>
+    <script src='../src/g2.svg.js'></script>
+    <script>
+      var ctx = document.getElementById("c").getContext("2d"),
+          g = g2({cartesian:true});
+
+      g.style({ls:"#789",fs:"#ddd",lw:3,ld:[4,4]})
+       .rec(100,100,50,30)
+       .exe(document.getElementById("svg"))
+       .exe(ctx);
+   </script>
+</body>
+</html>
