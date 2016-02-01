@@ -52,7 +52,7 @@ Object.defineProperty(g2.prototype, "state",
 
 /**
  * Set the view's cartesian mode flag.
- * ![Example](https://goessner.github.io/g2-svg/test/index.html#cartesian "Example")
+ * [Example](https://goessner.github.io/g2-svg/test/index.html#cartesian)
  * @method
  * @returns {object} g2
  * @param {bool} [on=true] Cartesian flag. Set it off by 'false'. Any other value is interpreted as 'true'.
@@ -64,6 +64,7 @@ g2.prototype.cartesian = function cartesian(on) {
 
 /**
  * Pan the view by a relative displacement vector.
+ * [Example](https://goessner.github.io/g2-svg/test/index.html#pan)
  * @method
  * @returns {object} g2
  * @param {float} dx pan x-value in device units.
@@ -77,6 +78,7 @@ g2.prototype.pan = function pan(dx,dy) {
 
 /**
  * Zoom the view by a scaling factor with respect to center.
+ * [Example](https://goessner.github.io/g2-svg/test/index.html#zoom)
  * Scaling is performed relative to current scale.
  * @method
  * @returns {object} g2
@@ -93,6 +95,7 @@ g2.prototype.zoom = function zoom(scl,x,y) {
 
 /**
  * Set the view by absolute origin coordinates and scaling factor in device units.
+ * [Example](https://goessner.github.io/g2-svg/test/index.html#view)
  * Cartesian flag is not affected.
  * @method
  * @returns {object} g2
@@ -372,6 +375,7 @@ g2.prototype.lin = function lin(x1,y1,x2,y2,style) {
 
 /**
  * Draw rectangle by anchor point and dimensions.
+ * ![Example](https://goessner.github.io/g2-svg/test/index.html#rec "Example")
  * @method
  * @returns {object} g2
  * @param {float} x x-value upper left corner.

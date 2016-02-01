@@ -41,10 +41,11 @@ window.onload = function() {
       document.getElementById("row").id = "#"+i;
    }
    for (var i=0; i<tests.length; i++) {
-      cell = document.getElementById("#"+i).getElementsByTagName("td");
+      row = document.getElementById("#"+i);
+      cell = row.getElementsByTagName("td");
       cell[0].innerHTML = tests[i].title;
       cell[1].innerHTML = tests[i].src.replace("<","&lt;");
-      cell.id = tests[i].id || tests[i].title;
+      row.id = tests[i].id || tests[i].title;
       g = eval(tests[i].src);
       g.exe(cell[2].firstChild.getContext("2d"));
       g.exe(cell[3]);

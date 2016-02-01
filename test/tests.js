@@ -2,8 +2,33 @@
 "use strict";
 var pi = Math.PI;
 var tests = [
-{ title: "grid",
-  src: 'g2().grid()'
+{ title: "cartesian",
+  src: `var origin = g2().style({lw:3})
+              .ply([20,0,0,0,0,20])
+              .cir(0,0,3);
+g2().cartesian().grid()
+    .use(origin)`
+},
+{ title: "pan",
+  src: `var origin = g2().style({lw:3})
+              .ply([20,0,0,0,0,20])
+              .cir(0,0,3);
+g2().pan(25,30).grid()
+    .use(origin)`
+},
+{ title: "zoom",
+  src: `var origin = g2().style({lw:3})
+              .ply([20,0,0,0,0,20])
+              .cir(0,0,3);
+g2().zoom(1.5,-35,-40).grid()
+    .use(origin)`
+},
+{ title: "view",
+  src: `var origin = g2().style({lw:3})
+              .ply([20,0,0,0,0,20])
+              .cir(0,0,3);
+g2().view(35,45,2).grid()
+    .use(origin)`
 },
 { title: "lin",
   src: `g2()
@@ -148,6 +173,9 @@ g2()
     sh:[5,5,5,"rgba(0,0,0,0.7)"]})
  .rec(30,40,50,20)
  .cir(140,50,40)`
+},
+{ title: "grid",
+  src: 'g2().grid()'
 }
 ]
 
