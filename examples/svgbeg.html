@@ -2,23 +2,20 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>svg line</title>
+    <title>svg beg</title>
 </head>
 
 <body>
-    <h1>svg line</h1>
+    <h1>svg beg</h1>
     <div id="svg" data-width="101", data-height="101"></div>
     <canvas id="c" width="101", height="101"></canvas>
     <script src='../../g2/dist/g2.js'></script>
-    <script src='../../g2-mec/src/g2.mec.js'></script>
     <script src='../src/g2.svg.js'></script>
     <script>
       var g = g2(), svg = {width:101,height:101};
-      g.grid()
-       .cartesian()
-       .style({lw:3,ls:"green"})
-       .lin(10,20,90,80,{lw:3,ls:"blue"})
-       .use("nodfix",{x:20,y:75})
+      g.beg({x:30,y:30,w:0.2,scl:2, ls:"#666",fs:"orange",lw:3, lc:"round",lj:"round"})
+         .rec(0,0,30,20)
+       .end()
        .exe(document.getElementById("c").getContext("2d"))
        .exe(document.getElementById("svg"));
 //       .exe(svg)

@@ -44,6 +44,7 @@ window.onload = function() {
       cell = document.getElementById("#"+i).getElementsByTagName("td");
       cell[0].innerHTML = tests[i].title;
       cell[1].innerHTML = tests[i].src.replace("<","&lt;");
+      cell.id = tests[i].id || tests[i].title;
       g = eval(tests[i].src);
       g.exe(cell[2].firstChild.getContext("2d"));
       g.exe(cell[3]);

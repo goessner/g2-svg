@@ -9,17 +9,16 @@ a 2D graphics command queue library. Maybe you want to [learn more](https://gith
 <canvas id="c" width="200", height="100"></canvas>         <!-- draw canvas graphics here -->
 <span id="svg" data-width="200" data-height="100"></span>  <!-- embed svg markup here -->
 <script src='g2.js'></script>
-<script src='g2.svg.js'></script>                          <!-- SVG addon for g2 -->
+<script src='g2+svg.js'></script>                          <!-- SVG addon for g2 -->
 <script>
-    g2().style({ls:"green",fs:"orange",lw:3})                // create g2 object and add style.
-        .rec(40,30,120,40)                                   // add rectangle.
+    g2().rec(40,30,120,40,{ls:"green",fs:"orange",lw:3})     // create g2 object, add rectangle with style.
         .exe(document.getElementById("c").getContext("2d"))  // render to canvas.
         .exe(document.getElementById("svg"));                // render as svg to 'span' element.
 </script>
 ```
 ![canvas %amp; svg](img/rects.png)
 
-In order to create SVG output _g2_'s `exe` command can be used. `exe`'s first argument always must be a
+In order to create SVG output _g2_'s `exe` command can be used. `exe`'s first argument must always be a
 suitable rendering context. For providing such a renderer we have two possibilities:
 
 SVG Container | Example | Comment
