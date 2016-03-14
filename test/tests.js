@@ -30,6 +30,12 @@ g2().zoom(1.5,-35,-40).grid()
 g2().view(35,45,2).grid()
     .use(origin)`
 },
+{ title: "del",
+  src: `g2()
+  .rec(60,30,80,40)
+  .del()
+  .cir(100,50,35)`
+},
 { title: "lin",
   src: `g2()
  .lin(20,30,180,80,
@@ -158,6 +164,9 @@ g2()
 { title: "img",
   src: `g2().img("./img/atom.png",30,30)`
 },
+{ title: "img-2",
+  src: `g2().img("unknown.png",30,30)`
+},
 { title: "beg-end",
   src:`g2()
  .beg({x:70,y:30,w:0.2,scl:2,
@@ -165,6 +174,18 @@ g2()
        lc:"round",lj:"round"})
    .rec(0,0,30,20)
  .end()`
+},
+{ title: "use",
+  src:`var smiley = g2()
+              .cir(0,0,5)  
+              .arc(0,0,3,0.8,2)
+              .style({fs:"snow"})
+              .cir(-2,-1,1)
+              .cir(2,-1,1);
+g2().use(smiley,{x:50,y:50,scl:4,
+         lwnosc:true,lw:3,fs:"yellow"})
+    .use(smiley,{x:150,y:50,scl:5,
+         lwnosc:true,lw:2,fs:"orange"});`
 },
 { title: "shadow",
   src:`g2()
