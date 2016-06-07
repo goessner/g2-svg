@@ -5,6 +5,9 @@
  */
 /* jshint -W014 */
 
+if (typeof module === "object" && module.require)
+    g2 = module.require('../../g2/g2');
+
 g2.Svg = {
    create: function() { var o = Object.create(this.prototype); o.constructor.apply(o,arguments); return o; },
    prototype: {
@@ -58,53 +61,52 @@ g2.ifc.svg = function(ctx) {
        || "innerHTML" in ctx
        || typeof ctx === "object" && "height" in ctx && "width" in ctx;
 }
-g2.proxy.svg = function(ctx) { return Object.getPrototypeOf(ctx) === g2.Svg.prototype ? ctx : g2.Svg.create(ctx); }
+g2.context.svg = function(ctx) { return Object.getPrototypeOf(ctx) === g2.Svg.prototype ? ctx : g2.Svg.create(ctx); }
 
-g2.prototype.exe.svg = {
-   beg: function(owner) {
-      if (g2.exeStack++ === 0) {   // outermost g2 object.
-         var state = (this.g2_owner = owner).state,
-             t = state.trf;      // initial transform (zoom, pan ...)
-         state.beg(this);
-         this.content.open = "svg";
-         this.str = '<svg width="'+this.width+'" height="'+this.height+'" fill="transparent" stroke="black"';
-         this.str += ' font-family="'+state.get('fof')+'" font-style="'+state.get('fos')+
-                     '" font-size="'+state.get('foz')+'" font-weight="'+state.get('fow')+'">\n';
-         this.content.open = "body";
-         // chrome and edge don't support transform property on outermost <svg> element. So add outer <g> element.
-         if (state.cartesian) {
-            this.str += '<g transform="matrix('+[t.scl,0,0,-t.scl,t.x+0.5,this.height-t.y+0.5]+')">\n';
-            this.outerTransform = true;          
-         }
-         else if (t.x !== 0 || t.y !== 0 || t.scl !== 1 ) {
-            this.str += '<g transform="matrix('+[t.scl,0,0,t.scl,t.x+0.5,t.y+0.5]+')">\n';
-            this.outerTransform = true;          
-         }
+g2.prototype.exe.pre.svg = function(owner) {        // owner g2 object ...
+   if (g2.exeStack++ === 0) { // outermost g2 ...
+      var state = owner.state, t = state.trf;      // initial transform (zoom, pan ...)
+      this.g2 = owner;
+      this.content.open = "svg";
+      this.str = '<svg width="'+this.width+'" height="'+this.height+'" fill="transparent" stroke="black"';
+      this.str += ' font-family="'+state.get('fof')+'" font-style="'+state.get('fos')+
+                  '" font-size="'+state.get('foz')+'" font-weight="'+state.get('fow')+'">\n';
+      this.content.open = "body";
+      // chrome and edge don't support transform property on outermost <svg> element. So add outer <g> element.
+      if (state.cartesian) {
+         this.str += '<g transform="matrix('+[t.scl,0,0,-t.scl,t.x+0.5,this.height-t.y+0.5]+')">\n';
+         this.outerTransform = true;          
       }
-      else {                          // 'used' g2 object
-         this.content.open = "head";  // .. so write it to the defs section.
-         this.str += '<g id="'+this.currentGroupName+'">\n';
-         this.openGroups.push("group");
+      else if (t.x !== 0 || t.y !== 0 || t.scl !== 1 ) {
+         this.str += '<g transform="matrix('+[t.scl,0,0,t.scl,t.x+0.5,t.y+0.5]+')">\n';
+         this.outerTransform = true;          
       }
-   },
-   end: function() {
-      if (--g2.exeStack === 0) {
-         while (this.openGroups.pop())
-            this.str += '</g>\n';
-         if (this.outerTransform)
-            this.str +='</g>\n';
-         // write svg string ...
-         if ("innerHTML" in this.ctx )
-            this.ctx.innerHTML = this.toString();
-         else
-            this.ctx.svg = this.toString();
-      }
-      else {                       // 'used' g2 object
-         while (this.openGroups.pop() !== "group") // close all defined groups ...
-            this.str += '</g>\n';
+      state.pre(this);
+   }
+   else {                          // 'used' g2 object
+      this.content.open = "head";  // .. so write it to the defs section.
+      this.str += '<g id="'+this.currentGroupName+'">\n';
+      this.openGroups.push("group");
+   }
+};
+g2.prototype.exe.post.svg = function() {
+   if (--g2.exeStack === 0) {
+      this.g2.state.post();
+      while (this.openGroups.pop())
          this.str += '</g>\n';
-         this.content.open = "body";
-      }
+      if (this.outerTransform)
+         this.str +='</g>\n';
+      // write svg string ...
+      if ("innerHTML" in this.ctx )
+         this.ctx.innerHTML = this.toString();
+      else
+         this.ctx.svg = this.toString();
+   }
+   else {                       // 'used' g2 object
+      while (this.openGroups.pop() !== "group") // close all defined groups ...
+         this.str += '</g>\n';
+      this.str += '</g>\n';
+      this.content.open = "body";
    }
 };
 
@@ -146,9 +148,9 @@ g2.prototype.stroke.svg = function stroke_svg(style,d) {
    if (d) this.path = d;
    if (this.path) {
       this.str += '<path';
-      if (style) this.g2_owner.state.save().add(style);
+      if (style) this.g2.state.save().add(style);
       this.str += ' fill="transparent" d="'+this.path+'"/>\n';
-      if (style) this.g2_owner.state.restore();
+      if (style) this.g2.state.restore();
    }
    this.path = false;
 };
@@ -157,9 +159,9 @@ g2.prototype.fill.svg = function fill_svg(style,d) {
    if (d) this.path = d;
    if (this.path) {
       this.str += '<path';
-      if (style) this.g2_owner.state.save().add(style);
+      if (style) this.g2.state.save().add(style);
       this.str += ' stroke="none" d="'+this.path+'"/>\n';
-      if (style) this.g2_owner.state.restore();
+      if (style) this.g2.state.restore();
    }
    this.path = false;
 };
@@ -167,16 +169,16 @@ g2.prototype.drw.svg = function drw_svg(style,d) {
    if (d) this.path = d;
    if (this.path){
       this.str += '<path';
-      if (style) this.g2_owner.state.save().add(style);
+      if (style) this.g2.state.save().add(style);
       this.str += ' d="'+this.path+'"/>\n';
-      if (style) this.g2_owner.state.restore();
+      if (style) this.g2.state.restore();
    }
    this.path = false;
 };
 g2.prototype.txt.svg = function txt_svg(s,x,y,w,style) {
-   var state = this.g2_owner.state;
+   var state = this.g2.state;
    this.str += '<text stroke="none"';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    if (!(style && "foc" in style) && state.get("foc") !== state.get("fill"))
       this.str += ' fill="'+state.get("foc")+'"';
    if (state.get("tval"))
@@ -198,7 +200,7 @@ g2.prototype.img.svg = function img_svg(img,x,y,b,h) {
    b = b || img.width;
    h = h || img.height;
    this.str += '<image xlink:href="'+img.src+'" width="'+b+'" height="'+h+'"';
-   this.str += this.g2_owner.state.cartesian
+   this.str += this.g2.state.cartesian
              ? ' transform="matrix('+[1,0,0,-1,x,y+h]+')"'
              : ' x="'+x+'" y="'+y+'"';
    this.str += '></image>\n';
@@ -206,31 +208,31 @@ g2.prototype.img.svg = function img_svg(img,x,y,b,h) {
 
 g2.prototype.lin.svg = function lin_svg(x1,y1,x2,y2,style) {
    this.str += '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2_owner.state.restore();
+   if (style) this.g2.state.restore();
 };
 
 g2.prototype.rec.svg = function rec_svg(x,y,b,h,style) {
    this.str += '<rect x="'+x+'" y="'+y+'" width="'+b+'" height="'+h+'"';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2_owner.state.restore();
+   if (style) this.g2.state.restore();
 };
 
 g2.prototype.cir.svg = function cir_svg(x,y,r,style) {
    this.str += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'"';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2_owner.state.restore();
+   if (style) this.g2.state.restore();
 };
 
 g2.prototype.arc.svg = function arc_svg(x,y,r,w,dw,style) {
    this.str += '<path d="M'+(x+Math.cos(w)*r)+','+(y+Math.sin(w)*r)+'A'+r+','+r+',0,'+(+(Math.abs(dw)>Math.PI))+
                         ','+(+(Math.sign(dw)>0))+','+(x+Math.cos(w+dw)*r)+','+(y+Math.sin(w+dw)*r)+'"';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2_owner.state.restore();
+   if (style) this.g2.state.restore();
 };
 
 g2.prototype.ply.svg = function ply_svg(parr,mode,itr,style) {
@@ -245,17 +247,17 @@ g2.prototype.ply.svg = function ply_svg(parr,mode,itr,style) {
          pstr += 'Z';
    }
    this.str += '<path';
-   if (style) this.g2_owner.state.save().add(style);
+   if (style) this.g2.state.save().add(style);
    this.str += ' d="'+pstr+'"/>\n';
-   if (style) this.g2_owner.state.restore();
+   if (style) this.g2.state.restore();
 };
 
 g2.prototype.beg.svg = function beg_svg(args) {
-   this.g2_owner.state.save();
+   this.g2.state.save();
    this.openGroups.push("beg");
    this.str += '<g';
    if (args) {
-      this.g2_owner.state.add(args);
+      this.g2.state.add(args);
    }
    this.str += '>\n';
 };
@@ -264,7 +266,7 @@ g2.prototype.end.svg = function end_svg() {
    while (this.openGroups.pop() !== "beg")
       this.str += '</g>\n';
    this.str += '</g>\n';
-   this.g2_owner.state.restore();
+   this.g2.state.restore();
 };
 
 g2.prototype.clr.svg = function clr_svg() {
@@ -272,7 +274,7 @@ g2.prototype.clr.svg = function clr_svg() {
 };
 
 g2.prototype.grid.svg = function grid_svg(color,size) {
-   var state = this.g2_owner.state, trf = state.trf,  // no ctx required ...
+   var state = this.g2.state, trf = state.trf,  // no ctx required ...
        b = this.width, h = this.height, trf0 = state.trf0, s = trf0.scl,
        sz = size || g2.prototype.grid.getSize(state,trf ? s : 1),
        xoff = trf.x ? trf.x%sz-sz : 0, yoff = trf.y ? trf.y%sz-sz : 0;
@@ -289,7 +291,7 @@ g2.prototype.grid.svg = function grid_svg(color,size) {
 };
 
 g2.prototype.use.svg = function use_svg(g,args) {
-   var owner = this.g2_owner, idx = this.useReg.indexOf(g), name = g2.symbolNameOf(g);
+   var owner = this.g2, idx = this.useReg.indexOf(g), name = g2.symbolNameOf(g);
 
    if (idx < 0) {             // referenced g2 object 'g' not in 'use registry' ..
       idx = this.useReg.push(g) - 1;
@@ -309,7 +311,7 @@ g2.prototype.use.svg = function use_svg(g,args) {
 g2.prototype.style.svg = function style_svg(args) {
    this.openGroups.push("style");  // open 'style' labeled group ...
    this.str += '<g';
-   this.g2_owner.state.add(args);
+   this.g2.state.add(args);
    this.str += '>\n';
 };
 
@@ -326,7 +328,7 @@ g2.State.svg = {
                 : val;
             this.str += ' stroke="' + val + '"';
          },
-   "lw": function(val,state) { this.str += ' stroke-width="'+(val/(state.get('lwnosc') ? state.current.scl : 1))+'"'; },
+   "lw": function(val,state) { this.str += ' stroke-width="'+(val/(state.get('lwnosc') ? state.trf.scl : 1))+'"'; },
    "lc": function(val) {  this.str += ' stroke-linecap="'+val+'"'; },
    "lj": function(val) { this.str += ' stroke-linejoin="'+val+'"'; },
    "lo": function(val) { this.str += ' stroke-dashoffset="'+val+'"'; },  // TODO make lw dependent
@@ -356,7 +358,7 @@ g2.State.svg = {
    "foz": function(val) { this.str += ' font-size="'+val+'"'; },
    "fof": function(val) { this.str += ' font-family="'+val+'"'; },
    "thal": function(val) {
-              var filter = {"center":"middle","right":"end"};
+              var filter = {"left":"start","center":"middle","right":"end"};
               this.str += ' text-anchor="'+(filter[val]||val)+'"';
            },
    "tval": function(val) { 

@@ -55,6 +55,11 @@ g2().view(35,45,2).grid()
  .arc( 90,50,35, 1/3*pi, 4/3*pi)
  .arc(120,50,35, 1/3*pi,-2/3*pi)`
 },
+{ title: "ply\nno fill",
+  src: `g2()
+ .style({ls:"red",lw:3})
+ .ply([20,10,60,80,120,30,180,90])`
+},
 { title: "ply",
   src: `g2()
  .style({ls:"red",lw:3,fs:"#ddd"})

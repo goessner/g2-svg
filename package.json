@@ -1,18 +1,12 @@
 {
   "name": "g2-svg",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "g2-svg - SVG addon for g2",
   "main": "g2.svg.js",
   "scripts": {
-    "build": "npm run concat && npm run concat2 && npm run minify && npm run minify2 && npm run minify3 && npm run cpy && npm run gzip1 && npm run gzip2",
-    "concat": "concat ../g2/src/g2.cor.js ./src/g2.svg.js -o ./dist/g2svg.js",
-    "concat2": "concat ../g2/dist/g2.js ./src/g2.svg.js -o ./dist/g2+svg.js",
-    "minify": "uglifyjs ./src/g2.svg.js -o ./dist/g2.svg.min.js --comments -m",
-    "minify2": "uglifyjs ./dist/g2svg.js -o ./dist/g2svg.min.js --comments -m",
-    "minify3": "uglifyjs ./dist/g2+svg.js -o ./dist/g2+svg.min.js --comments -m",
-    "cpy": "copyfiles -f ./src/g2.svg.js ./dist",
-    "gzip1": "7z -tgzip a ./dist/g2svg.min.js.gz ./dist/g2svg.min.js",
-    "gzip2": "7z -tgzip a ./dist/g2+svg.min.js.gz ./dist/g2+svg.min.js"
+    "build": "npm run minify && npm run cptest",
+    "minify": "uglifyjs ./g2.svg.js -o ./g2.svg.min.js --comments -m",
+    "cptest": "copyfiles -f ./test/*.* ../goessner.github.io/g2-svg/test"
   },
   "author": "Stefan Goessner <fang03@web.de>",
   "repository": {

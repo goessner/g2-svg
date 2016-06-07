@@ -1,7 +1,7 @@
 # g2.svg
 
-g2-svg is the [SVG](http://www.w3.org/Graphics/SVG/) addon for [_g2_](https://github.com/goessner/g2),
-a 2D graphics command queue library. Maybe you want to [learn more](https://github.com/goessner/g2) about _g2_.
+g2-svg is an [SVG](http://www.w3.org/Graphics/SVG/) addon for [_g2_](https://github.com/goessner/g2).
+Maybe you want to [learn more](https://github.com/goessner/g2) about _g2_, a 2D graphics command queue library.
 
 ## Example
 
@@ -9,7 +9,7 @@ a 2D graphics command queue library. Maybe you want to [learn more](https://gith
 <canvas id="c" width="200", height="100"></canvas>         <!-- draw canvas graphics here -->
 <span id="svg" data-width="200" data-height="100"></span>  <!-- embed svg markup here -->
 <script src='g2.js'></script>
-<script src='g2+svg.js'></script>                          <!-- SVG addon for g2 -->
+<script src='g2.svg.js'></script>                          <!-- SVG addon for g2 -->
 <script>
     g2().rec(40,30,120,40,{ls:"green",fs:"orange",lw:3})     // create g2 object, add rectangle with style.
         .exe(document.getElementById("c").getContext("2d"))  // render to canvas.
@@ -26,7 +26,7 @@ SVG Container | Example | Comment
 Any HTML container element | `<div data-width="200" data-height="100"></div>` | `data-width` and `data-height` attributes have to be provided in order to specify the viewport size. The SVG markup will be inserted into that element then via `innerHTML`. So previous content gets overwritten. 
 Any Javascript object | `{ width:200, height:100 }` |  An arbitrary javascript object providing at least both a `width` and a `height` property. The SVG markup will be written as a string to a new or existing `svg` property of that object.
 
-Since _g2_ has no idea of the viewport size while building the command queue, the rendering context has to provide that information.
+The Javascript object or HTML container element has to provide viewport size values.
 
 The SVG output of the example above reads:
 ```html
@@ -61,3 +61,32 @@ fs.writeFile("./rec.svg", ctx.svg, function(err) { if(err) return console.log(er
 ## Tests
 
 See this growing table of [test cases](https://goessner.github.io/g2-svg/test/index.html) with canvas and svg output side by side.
+
+
+## GitCDN
+Use the link [https://gitcdn.xyz/repo/goessner/g2-mec/master/g2.mec.min.js](https://gitcdn.xyz/repo/goessner/g2/master/g2.min.js)
+for getting the latest commit as a raw file.
+
+In HTML use ...
+```html
+<script src="https://gitcdn.xyz/repo/goessner/g2-svg/master/g2.svg.min.js"></script>
+```
+
+# License
+`g2.svg` is licensed under the terms of the MIT License.
+
+
+#Change Log
+## 2.1.0 - 2016-02-01
+
+### Added
+
+* `style` argument for elements `lin`,`rec`,`cir`,`arc`,`ply`.
+* `style` as first argument for `stroke`,`fill` and `drw`, optionally followed by a svg path definition string.
+
+
+## 0.2.0 - 2016-01-10
+
+### Added
+
+    CHANGELOG.md @goessner.
