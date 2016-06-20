@@ -1,6 +1,6 @@
 {
   "name": "g2-svg",
-  "version": "0.2.5",
+  "version": "0.3",
   "description": "g2-svg - SVG addon for g2",
   "main": "g2.svg.js",
   "scripts": {
