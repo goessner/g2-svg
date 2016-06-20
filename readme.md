@@ -19,7 +19,7 @@ Maybe you want to [learn more](https://github.com/goessner/g2) about _g2_, a 2D 
 ![canvas %amp; svg](img/rects.png)
 
 In order to create SVG output _g2_'s `exe` command can be used. `exe`'s first argument must always be a
-suitable rendering context. For providing such a renderer we have two possibilities:
+suitable rendering context. For providing such a rendering context we have two possibilities:
 
 SVG Container | Example | Comment
 -------- |------- | ---
