@@ -2,20 +2,27 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>svg use - test</title>
+    <title>svg use2 - test</title>
     <style> canvas { border: 1px solid #000; } </style>
 </head>
 
 <body>
-    <h1>svg use - test</h1>
+    <h1>svg use2 - test</h1>
     <div id="svg" data-width="201", data-height="101"></div>
     <canvas id="c" width="201", height="101"></canvas>
     <script src='../../g2/g2.js'></script>
     <script src='../g2.svg.js'></script>
     <script>
-      var g = g2(), symbol = g2().lin(-10,-10,10,10,{lwnosc:true});
-      g.cartesian()
-       .use(symbol,{x:65,y:50,scl:2,lw:4,ls:"gray"})
+      var smiley = g2()
+              .style({lwnosc:true})
+              .cir(0,0,5)
+              .arc(0,0,3,0.8,2)
+              .style({fs:"snow"})
+              .cir(-2,-1,1)
+              .cir(2,-1,1);
+
+g2().use(smiley,{x:50,y:50,scl:4,
+             lw:2,fs:"yellow"})
        .exe(document.getElementById("svg"))
        .exe(document.getElementById("c").getContext("2d"));
       console.log(document.getElementById("svg").innerHTML)

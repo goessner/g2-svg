@@ -5,9 +5,6 @@
  */
 /* jshint -W014 */
 
-if (typeof module === "object" && module.require)
-    g2 = module.require('../../g2/g2');
-
 g2.Svg = {
    create: function() { var o = Object.create(this.prototype); o.constructor.apply(o,arguments); return o; },
    prototype: {
@@ -63,10 +60,9 @@ g2.ifc.svg = function(ctx) {
 }
 g2.context.svg = function(ctx) { return Object.getPrototypeOf(ctx) === g2.Svg.prototype ? ctx : g2.Svg.create(ctx); }
 
-g2.prototype.exe.pre.svg = function(owner) {        // owner g2 object ...
+g2.prototype.exe.pre.svg = function(g) {        // calling g2 object ...
    if (g2.exeStack++ === 0) { // outermost g2 ...
-      var state = owner.state, t = state.trf;      // initial transform (zoom, pan ...)
-      this.g2 = owner;
+      var state = (this.g2state = g.state), t = state.trf;      // initial transform (zoom, pan ...)
       this.content.open = "svg";
       this.str = '<svg width="'+this.width+'" height="'+this.height+'" fill="transparent" stroke="black"';
       this.str += ' font-family="'+state.get('fof')+'" font-style="'+state.get('fos')+
@@ -81,7 +77,6 @@ g2.prototype.exe.pre.svg = function(owner) {        // owner g2 object ...
          this.str += '<g transform="matrix('+[t.scl,0,0,t.scl,t.x+0.5,t.y+0.5]+')">\n';
          this.outerTransform = true;          
       }
-      state.pre(this);
    }
    else {                          // 'used' g2 object
       this.content.open = "head";  // .. so write it to the defs section.
@@ -91,7 +86,6 @@ g2.prototype.exe.pre.svg = function(owner) {        // owner g2 object ...
 };
 g2.prototype.exe.post.svg = function() {
    if (--g2.exeStack === 0) {
-      this.g2.state.post();
       while (this.openGroups.pop())
          this.str += '</g>\n';
       if (this.outerTransform)
@@ -148,9 +142,9 @@ g2.prototype.stroke.svg = function stroke_svg(style,d) {
    if (d) this.path = d;
    if (this.path) {
       this.str += '<path';
-      if (style) this.g2.state.save().add(style);
+      if (style) this.g2state.save().add(style);
       this.str += ' fill="transparent" d="'+this.path+'"/>\n';
-      if (style) this.g2.state.restore();
+      if (style) this.g2state.restore();
    }
    this.path = false;
 };
@@ -159,9 +153,9 @@ g2.prototype.fill.svg = function fill_svg(style,d) {
    if (d) this.path = d;
    if (this.path) {
       this.str += '<path';
-      if (style) this.g2.state.save().add(style);
+      if (style) this.g2state.save().add(style);
       this.str += ' stroke="none" d="'+this.path+'"/>\n';
-      if (style) this.g2.state.restore();
+      if (style) this.g2state.restore();
    }
    this.path = false;
 };
@@ -169,16 +163,16 @@ g2.prototype.drw.svg = function drw_svg(style,d) {
    if (d) this.path = d;
    if (this.path){
       this.str += '<path';
-      if (style) this.g2.state.save().add(style);
+      if (style) this.g2state.save().add(style);
       this.str += ' d="'+this.path+'"/>\n';
-      if (style) this.g2.state.restore();
+      if (style) this.g2state.restore();
    }
    this.path = false;
 };
 g2.prototype.txt.svg = function txt_svg(s,x,y,w,style) {
-   var state = this.g2.state;
+   var state = this.g2state;
    this.str += '<text stroke="none"';
-   if (style) this.g2.state.save().add(style);
+   if (style) state.save().add(style);
    if (!(style && "foc" in style) && state.get("foc") !== state.get("fill"))
       this.str += ' fill="'+state.get("foc")+'"';
    if (state.get("tval"))
@@ -200,7 +194,7 @@ g2.prototype.img.svg = function img_svg(img,x,y,b,h) {
    b = b || img.width;
    h = h || img.height;
    this.str += '<image xlink:href="'+img.src+'" width="'+b+'" height="'+h+'"';
-   this.str += this.g2.state.cartesian
+   this.str += this.g2state.cartesian
              ? ' transform="matrix('+[1,0,0,-1,x,y+h]+')"'
              : ' x="'+x+'" y="'+y+'"';
    this.str += '></image>\n';
@@ -208,56 +202,65 @@ g2.prototype.img.svg = function img_svg(img,x,y,b,h) {
 
 g2.prototype.lin.svg = function lin_svg(x1,y1,x2,y2,style) {
    this.str += '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"';
-   if (style) this.g2.state.save().add(style);
+   if (style) this.g2state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2.state.restore();
+   if (style) this.g2state.restore();
 };
 
 g2.prototype.rec.svg = function rec_svg(x,y,b,h,style) {
    this.str += '<rect x="'+x+'" y="'+y+'" width="'+b+'" height="'+h+'"';
-   if (style) this.g2.state.save().add(style);
+   if (style) this.g2state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2.state.restore();
+   if (style) this.g2state.restore();
 };
 
 g2.prototype.cir.svg = function cir_svg(x,y,r,style) {
    this.str += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'"';
-   if (style) this.g2.state.save().add(style);
+   if (style) this.g2state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2.state.restore();
+   if (style) this.g2state.restore();
 };
 
 g2.prototype.arc.svg = function arc_svg(x,y,r,w,dw,style) {
    this.str += '<path d="M'+(x+Math.cos(w)*r)+','+(y+Math.sin(w)*r)+'A'+r+','+r+',0,'+(+(Math.abs(dw)>Math.PI))+
                         ','+(+(Math.sign(dw)>0))+','+(x+Math.cos(w+dw)*r)+','+(y+Math.sin(w+dw)*r)+'"';
-   if (style) this.g2.state.save().add(style);
+   if (style) this.g2state.save().add(style);
    this.str += '/>\n';
-   if (style) this.g2.state.restore();
+   if (style) this.g2state.restore();
 };
 
-g2.prototype.ply.svg = function ply_svg(parr,mode,itr,style) {
+g2.prototype.ply.svg = function ply_svg(pts,mode,pi,style) {
    var p, i = 0, split = mode === "split", pstr = '';
-   itr = itr || g2.prototype.ply.itr;
-   p = itr(parr,i++);
-   if (!p.done) {      // draw polygon ..
-      pstr += 'M'+p.x+','+p.y;
-      while (!(p = itr(parr,i++)).done)
-         pstr += (split ? (i%2) ? 'M' : 'L' : ' ') + p.x + ',' + p.y;
-      if (mode && !split)  // closed then ..
-         pstr += 'Z';
-   }
+   pstr += 'M'+(p=pi(0)).x+','+p.y;
+   for (i=1; i < pi.len; i++) 
+      pstr += (split ? (i%2 ? 'M' : 'L') : ' ') + (p=pi(i)).x + ',' + p.y;
+   if (mode && !split)  // closed then ..
+      pstr += 'Z';
    this.str += '<path';
-   if (style) this.g2.state.save().add(style);
+   if (style) this.g2state.save().add(style);
    this.str += ' d="'+pstr+'"/>\n';
-   if (style) this.g2.state.restore();
+   if (style) this.g2state.restore();
+};
+
+g2.prototype.spline.svg = function spline_svg(b,closed,style) {
+   var pstr = '';
+   pstr += 'M'+b[0].x+','+b[0].y;
+   for (var i=0, n=b.length; i < n-1; i++)
+      pstr += 'C'+b[i].x1+','+b[i].y1+','+b[i].x2+','+b[i].y2+','+b[i+1].x+','+b[i+1].y;
+   if (closed)
+      pstr += 'Z';
+   this.str += '<path';
+   if (style) this.g2state.save().add(style);
+   this.str += ' d="'+pstr+'"/>\n';
+   if (style) this.g2state.restore();
 };
 
 g2.prototype.beg.svg = function beg_svg(args) {
-   this.g2.state.save();
+   this.g2state.save();
    this.openGroups.push("beg");
    this.str += '<g';
    if (args) {
-      this.g2.state.add(args);
+      this.g2state.add(args);
    }
    this.str += '>\n';
 };
@@ -266,7 +269,7 @@ g2.prototype.end.svg = function end_svg() {
    while (this.openGroups.pop() !== "beg")
       this.str += '</g>\n';
    this.str += '</g>\n';
-   this.g2.state.restore();
+   this.g2state.restore();
 };
 
 g2.prototype.clr.svg = function clr_svg() {
@@ -274,7 +277,7 @@ g2.prototype.clr.svg = function clr_svg() {
 };
 
 g2.prototype.grid.svg = function grid_svg(color,size) {
-   var state = this.g2.state, trf = state.trf,  // no ctx required ...
+   var state = this.g2state, trf = state.trf,  // no ctx required ...
        b = this.width, h = this.height, trf0 = state.trf0, s = trf0.scl,
        sz = size || g2.prototype.grid.getSize(state,trf ? s : 1),
        xoff = trf.x ? trf.x%sz-sz : 0, yoff = trf.y ? trf.y%sz-sz : 0;
@@ -291,27 +294,30 @@ g2.prototype.grid.svg = function grid_svg(color,size) {
 };
 
 g2.prototype.use.svg = function use_svg(g,args) {
-   var owner = this.g2, idx = this.useReg.indexOf(g), name = g2.symbolNameOf(g);
+   var idx = this.useReg.indexOf(g), name;
 
+   for (var m in g2.symbol)   // lookup `g2.symbol` dictionary for `g`.
+      if (g2.symbol[m] === g)
+         name = m;
    if (idx < 0) {             // referenced g2 object 'g' not in 'use registry' ..
       idx = this.useReg.push(g) - 1;
       this.currentGroupName = name || (this.name + idx);
-      owner.state.save();
-      owner.exe(this,g);
-      owner.state.restore();
+      this.g2state.save();
+      g.exe(this);
+      this.g2state.restore();
    }
-   owner.state.save();
+   this.g2state.save();
    this.str += '<use xlink:href="#'+(name || (this.name + idx))+'"';
    if (args)
-      owner.state.add(args);
+      this.g2state.add(args);
    this.str += '/>\n';
-   owner.state.restore();
+   this.g2state.restore();
 };
 
 g2.prototype.style.svg = function style_svg(args) {
    this.openGroups.push("style");  // open 'style' labeled group ...
    this.str += '<g';
-   this.g2.state.add(args);
+   this.g2state.add(args);
    this.str += '>\n';
 };
 
@@ -328,7 +334,8 @@ g2.State.svg = {
                 : val;
             this.str += ' stroke="' + val + '"';
          },
-   "lw": function(val,state) { this.str += ' stroke-width="'+(val/(state.get('lwnosc') ? state.trf.scl : 1))+'"'; },
+   "lw": function(val,state) { this.str += ' stroke-width="'+val+'"'; },
+   "lwnosc": function(val,state) { this.str += ' vector-effect="non-scaling-stroke"'; },
    "lc": function(val) {  this.str += ' stroke-linecap="'+val+'"'; },
    "lj": function(val) { this.str += ' stroke-linejoin="'+val+'"'; },
    "lo": function(val) { this.str += ' stroke-dashoffset="'+val+'"'; },  // TODO make lw dependent
@@ -372,8 +379,9 @@ g2.State.svg = {
           },
    "matrix": function(m) {
                 this.str += ' transform="matrix('+m+')"';
-             },
+             }
    // SVG does not support hatch pattern fill color at current (2016/01) ..
+   /*
    "hatch": function hatch(val) {
                var idx = this.useReg.indexOf(val.toString());  // lookup hatch pattern in 'use registry' ..
                if (idx < 0) {  // referenced hatch pattern not in 'use registry' ..
@@ -391,4 +399,5 @@ g2.State.svg = {
                }
                return "url(#"+(this.name + idx)+")";
             }
+    */
 }

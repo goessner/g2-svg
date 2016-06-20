@@ -62,7 +62,6 @@ fs.writeFile("./rec.svg", ctx.svg, function(err) { if(err) return console.log(er
 
 See this growing table of [test cases](https://goessner.github.io/g2-svg/test/index.html) with canvas and svg output side by side.
 
-
 ## GitCDN
 Use the link [https://gitcdn.xyz/repo/goessner/g2-mec/master/g2.mec.min.js](https://gitcdn.xyz/repo/goessner/g2/master/g2.min.js)
 for getting the latest commit as a raw file.
@@ -77,6 +76,16 @@ In HTML use ...
 
 
 #Change Log
+
+## 2.2.0 - 2016-06-20
+### Added
+
+* `g2.spline` performing 'centripetal Catmull-Rom' interpolation.
+
+### Modified
+
+* experimental `g2.State.hatch` fill style removed.
+
 ## 2.1.0 - 2016-02-01
 
 ### Added

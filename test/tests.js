@@ -136,6 +136,21 @@ g2()
 g2()
  .drw({lw:4,ls:"#080",fs:"#0f0"},d)`
 },
+{ title: "spline",
+  src: `g2()
+ .spline([50,40,150,60,150,60],false,
+        {lw:4,ls:"#080"})`
+},
+{ title: "spline-2",
+  src: `g2()
+ .spline([50,20,50,80,150,20],
+   false,{lw:4,ls:"#080"})`
+},
+{ title: "spline-3",
+  src: `g2()
+ .spline([50,30,150,20,150,80,50,70],
+   true,{lw:4,ls:"#080",fs:"orange"})`
+},
 { title: "txt",
   src: `g2().txt("Hello",30,30,0,
          {foc:"red",foz:30})`
@@ -170,7 +185,8 @@ g2()
   src: `g2().img("./img/atom.png",30,30)`
 },
 { title: "img-2",
-  src: `g2().img("unknown.png",30,30)`
+  src: `g2().img("unknown.png",30,30)
+// intended 'file Not Found' error.`
 },
 { title: "beg-end",
   src:`g2()
@@ -181,16 +197,46 @@ g2()
  .end()`
 },
 { title: "use",
+  src:`var symbol = g2()
+    .rec(-25,-25,50,50)
+    .style({ls:"gray",lw:3,fs:"@fs2"})
+    .cir(0,0,20);
+g2().use(symbol,{x:65,y:50,fs:"red",
+                 fs2:"green"})
+    .use(symbol,{x:135,y:50,fs:"blue",
+                 fs2:"yellow"})
+// doesn't inherently work with SVG`
+},
+{ title: "use-2",
+  src:`var symbol = g2()
+    .lin(-25,-25,25,25)
+    .style({ls:"gray",lw:3})
+    .cir(0,0,20);
+g2().cartesian()
+   .use(symbol,{x:65,y:50,fs:"red"})
+   .use(symbol,{x:135,y:50,fs:"blue"})`
+},
+{ title: "use-3",
+  src:`var symbol = 
+     g2().lin(-10,-10,10,10,
+              {lwnosc:true});
+g2().use(symbol,{x:100,y:50,scl:2,
+                 lw:4,ls:"gray"})`
+},
+{ title: "use-4",
   src:`var smiley = g2()
+              .style({lwnosc:true})
               .cir(0,0,5)  
               .arc(0,0,3,0.8,2)
               .style({fs:"snow"})
               .cir(-2,-1,1)
               .cir(2,-1,1);
 g2().use(smiley,{x:50,y:50,scl:4,
-         lwnosc:true,lw:3,fs:"yellow"})
+             lw:2,fs:"yellow"})
     .use(smiley,{x:150,y:50,scl:5,
-         lwnosc:true,lw:2,fs:"orange"});`
+             lw:1,fs:"orange"});
+// SVG 'non-scaling-stroke' doesn't
+// work with groups (16/06/2016)`
 },
 { title: "shadow",
   src:`g2()
@@ -207,4 +253,3 @@ g2().use(smiley,{x:50,y:50,scl:4,
 
 if (typeof module === "object" && module.exports)
    module.exports = tests;
-   

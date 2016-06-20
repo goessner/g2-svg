@@ -10,13 +10,14 @@
     <h1>g2 - svg - style</h1>
     <div id="svg" data-width="300", data-height="200"></div>
     <canvas id="c" width="300" height="200"></canvas>
-    <script src='../../g2/dist/g2.js'></script>
-    <script src='../src/g2.svg.js'></script>
+    <script src='../../g2/g2.js'></script>
+    <script src='../g2.svg.js'></script>
     <script>
       var ctx = document.getElementById("c").getContext("2d"),
-          g = g2({cartesian:true});
+          g = g2();
 
-      g.rec(100,100,50,30,{ls:"#789",fs:"#ddd",lw:3,ld:[4,4]})
+      g.cartesian()
+       .rec(100,100,50,30,{ls:"#789",fs:"#ddd",lw:3,ld:[4,4]})
        .exe(document.getElementById("svg"))
        .exe(ctx);
    </script>
