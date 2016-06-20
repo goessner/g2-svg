@@ -63,7 +63,7 @@ fs.writeFile("./rec.svg", ctx.svg, function(err) { if(err) return console.log(er
 See this growing table of [test cases](https://goessner.github.io/g2-svg/test/index.html) with canvas and svg output side by side.
 
 ## GitCDN
-Use the link [https://gitcdn.xyz/repo/goessner/g2-mec/master/g2.mec.min.js](https://gitcdn.xyz/repo/goessner/g2/master/g2.min.js)
+Use the link [https://gitcdn.xyz/repo/goessner/g2-svg/master/g2.svg.min.js](https://gitcdn.xyz/repo/goessner/g2-svg/master/g2.svg.min.js)
 for getting the latest commit as a raw file.
 
 In HTML use ...
