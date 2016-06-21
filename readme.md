@@ -1,3 +1,6 @@
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/goessner/g2/license.txt)
+[![npm](https://img.shields.io/npm/v/@goessner/g2-svg.svg)](https://www.npmjs.com/package/@goessner/g2-svg)
+
 # g2.svg
 
 g2-svg is an [SVG](http://www.w3.org/Graphics/SVG/) addon for [_g2_](https://github.com/goessner/g2).
@@ -48,12 +51,13 @@ Standalone | `g2svg.js` |  Prefer if you don't want canvas rendering or in an en
 
 ## Example for `node.js`
 ```javascript
-var fs = require('fs'),                          
-    g2 = require('g2svg.js'),                     // load standalone 'g2+svg' file.
-    ctx = {width:200,height:100},                 // provide context with viewport size.
+var fs = require('fs'),
+    g2 = require('./g2.js'),                      // load 'g2'.
+    x  = require('./g2.svg.js'),                  // load 'g2.svg'.
+    ctx = {width:200,height:100},                 // provide context including viewport size.
     g = g2().style({ls:"green",fs:"orange",lw:3}) // create g2 object and add style.
-        .rec(40,30,120,40)                        // add rectangle.
-        .exe(ctx);                                // render as svg.
+            .rec(40,30,120,40)                    // add rectangle.
+            .exe(ctx);                            // render as svg.
 
 fs.writeFile("./rec.svg", ctx.svg, function(err) { if(err) return console.log(err); });
 ```
@@ -77,7 +81,7 @@ In HTML use ...
 
 #Change Log
 
-## 2.2.0 - 2016-06-20
+## 0.3.2 - 2016-06-20
 ### Added
 
 * `g2.spline` performing 'centripetal Catmull-Rom' interpolation.
@@ -86,7 +90,7 @@ In HTML use ...
 
 * experimental `g2.State.hatch` fill style removed.
 
-## 2.1.0 - 2016-02-01
+## 0.3.0 - 2016-02-01
 
 ### Added
 

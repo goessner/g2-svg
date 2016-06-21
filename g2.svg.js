@@ -5,6 +5,8 @@
  */
 /* jshint -W014 */
 
+
+
 g2.Svg = {
    create: function() { var o = Object.create(this.prototype); o.constructor.apply(o,arguments); return o; },
    prototype: {

@@ -1,7 +1,16 @@
 {
-  "name": "g2-svg",
-  "version": "0.3",
+  "name": "@goessner/g2-svg",
+  "version": "0.3.2",
   "description": "g2-svg - SVG addon for g2",
+  "keywords": [
+    "vector",
+    "graphics",
+    "2d",
+    "command queue",
+    "canvas",
+    "svg",
+    "javascript"
+  ],
   "main": "g2.svg.js",
   "scripts": {
     "build": "npm run minify && npm run cptest",
