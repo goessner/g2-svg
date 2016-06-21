@@ -41,14 +41,6 @@ The SVG output of the example above reads:
 </svg>
 ```
 
-You can combine _g2_ and SVG in two variants.
-
-Use case | File | Comment
--------- |------- | ---
-Addon | `g2.svg.js` | Use if you want both - canvas and SVG rendering. 
-Standalone | `g2svg.js` |  Prefer if you don't want canvas rendering or in an environment missing canvas like `node.js`.
-
-
 ## Example for `node.js`
 ```javascript
 var fs = require('fs'),
