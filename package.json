@@ -1,6 +1,6 @@
 {
-  "name": "@goessner/g2-svg",
-  "version": "0.3.2",
+  "name": "g2d-svg",
+  "version": "0.3.4",
   "description": "g2-svg - SVG addon for g2",
   "keywords": [
     "vector",

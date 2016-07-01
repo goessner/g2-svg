@@ -7,7 +7,7 @@
 
 <body>
     <h1>svg line</h1>
-    <div id="svg" data-width="101", data-height="101"></div>
+    <div id="svg" data-width="101", data-height="101"></div><br>
     <canvas id="c" width="101", height="101"></canvas>
     <script src='../../g2/g2.js'></script>
     <script src='../g2.svg.js'></script>
@@ -18,9 +18,10 @@
 //       .style({lw:3,ls:"green"})
        .lin(10,20,90,80,{lw:3,ls:"blue"})
        .exe(document.getElementById("c").getContext("2d"))
-       .exe(document.getElementById("svg"));
+       .exe(document.getElementById("svg"))
 //       .exe(svg)
        console.log(document.getElementById("svg").innerHTML)
+       console.log(svg);
    </script>
 </body>
 </html>

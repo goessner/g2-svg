@@ -5,8 +5,6 @@
  */
 /* jshint -W014 */
 
-
-
 g2.Svg = {
    create: function() { var o = Object.create(this.prototype); o.constructor.apply(o,arguments); return o; },
    prototype: {
@@ -25,12 +23,12 @@ g2.Svg = {
          this.useReg = [];  // registry of used g2 objects ...
       },
       get width() { return "innerHTML" in this.ctx 
-                         ? this.ctx.getAttribute("data-width") 
-                         : this.ctx.width; 
+                         ? +this.ctx.getAttribute("data-width") 
+                         : +this.ctx.width; 
       },
       get height() { return "innerHTML" in this.ctx
-                          ? this.ctx.getAttribute("data-height") 
-                          : this.ctx.height;
+                          ? +this.ctx.getAttribute("data-height") 
+                          : +this.ctx.height;
       },
       get str()  { return this.content[this.content.open]; },
       set str(s) { this.content[this.content.open] = s; },
@@ -75,7 +73,7 @@ g2.prototype.exe.pre.svg = function(g) {        // calling g2 object ...
          this.str += '<g transform="matrix('+[t.scl,0,0,-t.scl,t.x+0.5,this.height-t.y+0.5]+')">\n';
          this.outerTransform = true;          
       }
-      else if (t.x !== 0 || t.y !== 0 || t.scl !== 1 ) {
+      else { // if (t.x !== 0 || t.y !== 0 || t.scl !== 1 ) {
          this.str += '<g transform="matrix('+[t.scl,0,0,t.scl,t.x+0.5,t.y+0.5]+')">\n';
          this.outerTransform = true;          
       }
@@ -235,7 +233,7 @@ g2.prototype.ply.svg = function ply_svg(pts,mode,pi,style) {
    var p, i = 0, split = mode === "split", pstr = '';
    pstr += 'M'+(p=pi(0)).x+','+p.y;
    for (i=1; i < pi.len; i++) 
-      pstr += (split ? (i%2 ? 'M' : 'L') : ' ') + (p=pi(i)).x + ',' + p.y;
+      pstr += (split ? (i%2 === 0 ? 'M' : 'L') : ' ') + (p=pi(i)).x + ',' + p.y;
    if (mode && !split)  // closed then ..
       pstr += 'Z';
    this.str += '<path';
@@ -285,8 +283,8 @@ g2.prototype.grid.svg = function grid_svg(color,size) {
        xoff = trf.x ? trf.x%sz-sz : 0, yoff = trf.y ? trf.y%sz-sz : 0;
 
    this.str += '<path stroke="'+(color||'#ccc')+'" stroke-width="1"';
-   this.str += state.cartesian ? ' transform="matrix('+[1/s,0,0,-1/s,-trf0.x/s+0.5,(h-trf0.y)/s-0.5]+')"'
-                               : ' transform="matrix('+[1/s,0,0,1/s,-trf0.x/s+0.5,-trf0.y/s-0.5]+')"';
+   this.str += state.cartesian ? ' transform="matrix('+[1/s,0,0,-1/s,-trf0.x/s,(h-trf0.y)/s]+')"'
+                               : ' transform="matrix('+[1/s,0,0,1/s,-trf0.x/s,-trf0.y/s]+')"';
    this.str += ' d="'; 
    for (var x=xoff,nx=b+1; x<nx; x+=sz) 
       this.str += 'M'+x+',0'+'L'+x+','+h;
@@ -305,7 +303,7 @@ g2.prototype.use.svg = function use_svg(g,args) {
       idx = this.useReg.push(g) - 1;
       this.currentGroupName = name || (this.name + idx);
       this.g2state.save();
-      g.exe(this);
+      g2.prototype.exe.use.call(g,this,"svg");
       this.g2state.restore();
    }
    this.g2state.save();

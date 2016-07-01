@@ -1,5 +1,5 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/goessner/g2/license.txt)
-[![npm](https://img.shields.io/npm/v/@goessner/g2-svg.svg)](https://www.npmjs.com/package/@goessner/g2-svg)
+[![npm](https://img.shields.io/npm/v/g2d-svg.svg)](https://www.npmjs.com/package/g2d-svg)
 
 # g2.svg
 
@@ -72,6 +72,12 @@ In HTML use ...
 
 
 #Change Log
+
+## 0.3.4 - 2016-07-01
+### Modified
+
+* `use` command execution simplified.
+* styling bug with `g2.prototype.use` removed. 
 
 ## 0.3.2 - 2016-06-20
 ### Added
