@@ -55,6 +55,14 @@ g2().view(35,45,2).grid()
  .arc( 90,50,35, 1/3*pi, 4/3*pi)
  .arc(120,50,35, 1/3*pi,-2/3*pi)`
 },
+{ title: "earc",
+  src: `g2()
+ .style({ls:"blue",lw:5,fs:"#ddd"})
+ .earc( 90,50,35,20, 1/3*pi, 4/3*pi,
+      {rot:pi/6})
+ .earc(120,50,35,20, 1/3*pi,-2/3*pi,
+      {rot:pi/6})`
+},
 { title: "ply\nno fill",
   src: `g2()
  .style({ls:"red",lw:3})

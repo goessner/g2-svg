@@ -9,7 +9,7 @@ Maybe you want to [learn more](https://github.com/goessner/g2) about _g2_, a 2D 
 ## Example
 
 ```html
-<canvas id="c" width="200", height="100"></canvas>         <!-- draw canvas graphics here -->
+<canvas id="c" width="200" height="100"></canvas>          <!-- draw canvas graphics here -->
 <span id="svg" data-width="200" data-height="100"></span>  <!-- embed svg markup here -->
 <script src='g2.js'></script>
 <script src='g2.svg.js'></script>                          <!-- SVG addon for g2 -->
@@ -72,6 +72,11 @@ In HTML use ...
 
 
 #Change Log
+
+## 0.3.5 - 2016-08-04
+### Added
+
+* `earc` elliptical arc command added.
 
 ## 0.3.4 - 2016-07-01
 ### Modified

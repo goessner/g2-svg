@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>svg earc - test</title>
+    <style> canvas { border: 1px solid #000; } </style>
+</head>
+
+<body>
+    <h1>svg earc - test</h1>
+    <div id="svg" data-width="201", data-height="101"></div>
+    <canvas id="c" width="201", height="101"></canvas>
+    <script src='../../g2/g2.js'></script>
+    <script src='../g2.svg.js'></script>
+    <script>
+      var g = g2();
+      g.earc(100,50,40,25,Math.PI/6,2/3*Math.PI,{rot:Math.PI/6})
+       .exe(document.getElementById("svg"))
+       .exe(document.getElementById("c").getContext("2d"));
+      console.log(document.getElementById("svg").innerHTML)
+   </script>
+</body>
+</html>

@@ -5,6 +5,10 @@
  */
 /* jshint -W014 */
 
+// treat node.js
+if (this.require !== undefined)  // assume 'g2.js' in the same directory ...
+   g2 = require("./g2.js");
+
 g2.Svg = {
    create: function() { var o = Object.create(this.prototype); o.constructor.apply(o,arguments); return o; },
    prototype: {
@@ -227,6 +231,20 @@ g2.prototype.arc.svg = function arc_svg(x,y,r,w,dw,style) {
    if (style) this.g2state.save().add(style);
    this.str += '/>\n';
    if (style) this.g2state.restore();
+};
+
+g2.prototype.earc.svg = function arc_svg(x,y,rx,ry,w,dw,args) {
+   var phi = args && args.rot || 0, 
+       cp  = Math.cos(phi),  sp  = Math.sin(phi),
+       rx1 = rx*Math.cos(w), ry1 = ry*Math.sin(w),
+       x1 = rx1*cp - ry1*sp, y1 = rx1*sp + ry1*cp,
+       rx2 = rx*Math.cos(w+dw), ry2 = ry*Math.sin(w+dw),
+       x2 = rx2*cp - ry2*sp, y2 = rx2*sp + ry2*cp;
+   this.str += '<path d="M'+(x+x1)+','+(y+y1)+'A'+rx+','+ry+','+(phi/Math.PI*180)+','+(+(Math.abs(dw)>Math.PI))+
+                        ','+(+(Math.sign(dw)>0))+','+(x+x2)+','+(y+y2)+'"';
+   if (args) this.g2state.save().add(args);
+   this.str += '/>\n';
+   if (args) this.g2state.restore();
 };
 
 g2.prototype.ply.svg = function ply_svg(pts,mode,pi,style) {
