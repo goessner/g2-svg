@@ -1,5 +1,6 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/goessner/g2/license.txt)
 [![npm](https://img.shields.io/npm/v/g2d-svg.svg)](https://www.npmjs.com/package/g2d-svg)
+[![npm](https://img.shields.io/npm/dt/g2d-svg.svg)](https://www.npmjs.com/package/g2d-svg)
 
 # g2.svg
 
